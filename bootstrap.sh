@@ -40,6 +40,6 @@ else
     -subj "/C=US/ST=Illinois/L=Chicago/O=atateno.io/OU=atateno.io/CN=atateno.io"
 
   # restrict server key permissions to the nginx user
-  chown 101:101 $PROJECT_ROOT/nginx/ssl/server.key
+  sudo chown 101:101 $PROJECT_ROOT/nginx/ssl/server.key
   sudo chmod 400 $PROJECT_ROOT/nginx/ssl/server.key
 fi
