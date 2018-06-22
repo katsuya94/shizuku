@@ -8,17 +8,38 @@ set -o pipefail
 PROJECT_ROOT="$(dirname ${BASH_SOURCE[0]})"
 
 if [ $(id -u) = 0 ]; then
+  # create admin user
   useradd -G sudo,docker -m -s /bin/bash kacchan
+
+  # set admin user password
   passwd kacchan
+
+  # copy authorized_keys to admin user
   mkdir -p /home/kacchan/.ssh
   cp /root/.ssh/authorized_keys /home/kacchan/.ssh/authorized_keys
   chown -R kacchan:kacchan /home/kacchan/.ssh
+
+  # configure SSH daemon
   patch /etc/ssh/sshd_config $PROJECT_ROOT/sshd_config.patch
   systemctl restart ssh
+
+  # install packages
   apt install htop
 else
+  # ensure jenkins user can access jenkins_home
   mkdir -p $PROJECT_ROOT/jenkins_home
   sudo chown 1000 $PROJECT_ROOT/jenkins_home
+
   mkdir -p $PROJECT_ROOT/nginx/ssl
+
+  # generate server key
   openssl genrsa -out $PROJECT_ROOT/nginx/ssl/server.key 2048
+
+  # self-sign server certificate
+  openssl req -x509 -key $PROJECT_ROOT/nginx/ssl/server.key \
+    -out $PROJECT_ROOT/nginx/ssl/server.crt
+
+  # restrict server key permissions to the nginx user
+  chmod 400 $PROJECT_ROOT/nginx/ssl/server.key
+  chown 101:101 $PROJECT_ROOT/nginx/ssl/server.key
 fi
