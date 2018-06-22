@@ -5,7 +5,6 @@ set -o errexit
 set -o verbose
 set -o nounset
 set -o pipefail
-set -o interactive
 
 useradd -G sudo,docker -m -s /bin/bash kacchan
 mkdir -p /home/kacchan/.ssh
