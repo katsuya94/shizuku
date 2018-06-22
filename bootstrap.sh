@@ -4,7 +4,6 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-set -o verbose
 
 PROJECT_ROOT="$(dirname ${BASH_SOURCE[0]})"
 
@@ -16,7 +15,10 @@ if [ $(id -u) = 0 ]; then
   chown -R kacchan:kacchan /home/kacchan/.ssh
   patch /etc/ssh/sshd_config $PROJECT_ROOT/sshd_config.patch
   systemctl restart ssh
+  apt install htop
 else
   mkdir -p $PROJECT_ROOT/jenkins_home
   sudo chown 1000 $PROJECT_ROOT/jenkins_home
+  mkdir -p $PROJECT_ROOT/nginx/ssl
+  openssl genrsa -nodes -out $PROJECT_ROOT/nginx/ssl/server.key 2048
 fi
