@@ -9,4 +9,4 @@ set -o pipefail
 useradd -G sudo,docker -m -s /bin/bash kacchan
 mkdir -p /home/kacchan/.ssh
 cp /root/.ssh/authorized_keys /home/kacchan/.ssh/authorized_keys
-su -l kacchan passwd
+su -l kacchan -c passwd
