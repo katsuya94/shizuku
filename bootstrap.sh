@@ -20,5 +20,5 @@ else
   mkdir -p $PROJECT_ROOT/jenkins_home
   sudo chown 1000 $PROJECT_ROOT/jenkins_home
   mkdir -p $PROJECT_ROOT/nginx/ssl
-  openssl genrsa -nodes -out $PROJECT_ROOT/nginx/ssl/server.key 2048
+  openssl genrsa -out $PROJECT_ROOT/nginx/ssl/server.key 2048
 fi
