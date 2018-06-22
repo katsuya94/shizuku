@@ -10,7 +10,7 @@ services:
       - "8080:8080"
       - "50000:50000"
     volumes:
-      - "jenkins_home:/var/jenkins_home"
+      - "jenkins-home:/var/jenkins_home"
   nginx:
     image: nginx:1.15
     entrypoint: ["/root/entrypoint.sh"]
@@ -21,3 +21,5 @@ services:
       - "./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf"
       - "./nginx/ssl:/etc/nginx/ssl"
       - "./nginx/entrypoint.sh:/root/entrypoint.sh"
+volumes:
+  jenkins-home: {}
