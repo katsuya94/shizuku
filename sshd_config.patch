@@ -1,0 +1,16 @@
+28c28
+< PermitRootLogin yes
+---
+> PermitRootLogin no
+49c49
+< ChallengeResponseAuthentication no
+---
+> ChallengeResponseAuthentication yes
+88c88,91
+< UsePAM yes
+\ No newline at end of file
+---
+> UsePAM yes
+> 
+> Match User kacchan
+>   AuthenticationMethods publickey,keyboard-interactive
