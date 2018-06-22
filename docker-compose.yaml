@@ -16,6 +16,7 @@ services:
     entrypoint: ["/root/entrypoint.sh"]
     command: ["nginx", "-g", "daemon off;"]
     ports:
+      - "80:80"
       - "443:443"
     volumes:
       - "./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf"
