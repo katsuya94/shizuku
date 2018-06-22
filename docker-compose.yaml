@@ -10,10 +10,11 @@ services:
       - "8080:8080"
       - "50000:50000"
     volumes:
-      - "./jenkins_home:/var/jenkins_home"
+      - "jenkins_home:/var/jenkins_home"
   nginx:
     image: nginx:1.15
     entrypoint: ["/root/entrypoint.sh"]
+    command: ["nginx", "-g", "daemon off;"]
     ports:
       - "443:443"
     volumes:

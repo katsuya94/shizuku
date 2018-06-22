@@ -26,12 +26,7 @@ if [ $(id -u) = 0 ]; then
   # install packages
   apt install htop
 else
-  # ensure jenkins user can access jenkins_home
-  mkdir -p $PROJECT_ROOT/jenkins_home
-  sudo chown 1000 $PROJECT_ROOT/jenkins_home
-
   mkdir -p $PROJECT_ROOT/nginx/ssl
-
 
   # self-sign server certificate
   openssl req -x509 -newkey rsa:2048 -days 365 -nodes \
