@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+PROJECT_ROOT="$(dirname $(dirname ${BASH_SOURCE[0]}))"
+
+docker-compose -f $PROJECT_ROOT/docker-compose.yaml stop jenkins
+docker run --rm --volumes-from shizuku_jenkins_1 -v ~:/root ubuntu \
+  tar cvzf /root/jenkins-$(date "+%Y%m%d%H%M%S").tar.gz /var/jenkins_home
+docker-compose -f $PROJECT_ROOT/docker-compose.yaml start jenkins
