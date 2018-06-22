@@ -3,6 +3,8 @@ version: "3"
 services:
   jenkins:
     image: jenkins/jenkins:lts
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+    command: ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
     environment:
       JAVA_OPTS: "-Djava.util.logging.config.file=/var/jenkins_home/log.properties"
       JENKINS_OPTS: "--prefix=/jenkins"
@@ -11,6 +13,7 @@ services:
       - "50000:50000"
     volumes:
       - "jenkins-home:/var/jenkins_home"
+      - "./jenkins/entrypoint.sh:/usr/local/bin/entrypoint.sh"
   nginx:
     image: nginx:1.15
     entrypoint: ["/root/entrypoint.sh"]
