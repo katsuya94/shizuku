@@ -6,7 +6,7 @@ set -o nounset
 set -o pipefail
 set -o verbose
 
-DIRECTORY="$(dirname ${BASH_SOURCE[0])"
+DIRECTORY="$(dirname ${BASH_SOURCE[0]})"
 useradd -G sudo,docker -m -s /bin/bash kacchan
 passwd kacchan
 mkdir -p /home/kacchan/.ssh
