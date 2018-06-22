@@ -11,4 +11,5 @@ useradd -G sudo,docker -m -s /bin/bash kacchan
 passwd kacchan
 mkdir -p /home/kacchan/.ssh
 cp /root/.ssh/authorized_keys /home/kacchan/.ssh/authorized_keys
+chown -R kacchan:kacchan /home/kacchan/.ssh
 patch /etc/ssh/sshd_config $DIRECTORY/sshd_config.patch
