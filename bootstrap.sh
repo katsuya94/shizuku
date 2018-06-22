@@ -32,12 +32,11 @@ else
 
   mkdir -p $PROJECT_ROOT/nginx/ssl
 
-  # generate server key
-  openssl genrsa -out $PROJECT_ROOT/nginx/ssl/server.key 2048
 
   # self-sign server certificate
-  openssl req -x509 -in $PROJECT_ROOT/nginx/ssl/server.key \
-    -out $PROJECT_ROOT/nginx/ssl/server.crt -days 365 \
+  openssl req -x509 -newkey rsa:2048 -days 365 \
+    -keyout $PROJECT_ROOT/nginx/ssl/server.key \
+    -out $PROJECT_ROOT/nginx/ssl/server.crt \
     -subj "/C=US/ST=Illinois/L=Chicago/O=atateno.io/OU=atateno.io/CN=atateno.io"
 
   # restrict server key permissions to the nginx user
