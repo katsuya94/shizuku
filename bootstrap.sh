@@ -7,10 +7,13 @@ set -o pipefail
 set -o verbose
 
 DIRECTORY="$(dirname ${BASH_SOURCE[0]})"
-useradd -G sudo,docker -m -s /bin/bash kacchan
-passwd kacchan
-mkdir -p /home/kacchan/.ssh
-cp /root/.ssh/authorized_keys /home/kacchan/.ssh/authorized_keys
-chown -R kacchan:kacchan /home/kacchan/.ssh
-patch /etc/ssh/sshd_config $DIRECTORY/sshd_config.patch
-systemctl restart ssh
+
+if [ $(id -u) = 0 ]; then
+  useradd -G sudo,docker -m -s /bin/bash kacchan
+  passwd kacchan
+  mkdir -p /home/kacchan/.ssh
+  cp /root/.ssh/authorized_keys /home/kacchan/.ssh/authorized_keys
+  chown -R kacchan:kacchan /home/kacchan/.ssh
+  patch /etc/ssh/sshd_config $DIRECTORY/sshd_config.patch
+  systemctl restart ssh
+fi
