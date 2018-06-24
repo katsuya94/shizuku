@@ -5,7 +5,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-PROJECT_ROOT="$(dirname ${BASH_SOURCE[0]})"
+PROJECT_ROOT="$(dirname $(dirname ${BASH_SOURCE[0]}))"
 
 if [ $(id -u) = 0 ]; then
   # create admin user
