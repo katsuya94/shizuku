@@ -38,6 +38,6 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: "kafka"
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper"
       KAFKA_BROKER_ID: "1"
-      KAFKA_HEAP_OPTS: "-Xms256m -Xmx512m"
+      KAFKA_HEAP_OPTS: "-Xms128m -Xmx256m"
 volumes:
   jenkins-home: {}
