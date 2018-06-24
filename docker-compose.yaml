@@ -3,6 +3,7 @@ version: "3"
 services:
   jenkins:
     image: jenkins/jenkins:lts
+    restart: always
     entrypoint: ["/usr/local/bin/entrypoint.sh"]
     command: ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
     environment:
@@ -15,6 +16,7 @@ services:
       - "./jenkins/entrypoint.sh:/usr/local/bin/entrypoint.sh"
   nginx:
     image: nginx:1.15
+    restart: always
     entrypoint: ["/root/entrypoint.sh"]
     command: ["nginx", "-g", "daemon off;"]
     ports:
@@ -28,9 +30,10 @@ services:
     image: zookeeper:3.4
     restart: always
     environment:
-      JAVA_OPTS: "-Xms64m -Xmx128m"
+      JVMFLAGS: "-Xms1m -Xmx2m"
   kafka:
     image: wurstmeister/kafka:1.1.0
+    restart: always
     environment:
       KAFKA_ADVERTISED_HOST_NAME: "kafka"
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper"
