@@ -26,14 +26,6 @@ if [ $(id -u) = 0 ]; then
   # install packages
   apt install htop
 else
-  mkdir -p $PROJECT_ROOT/nginx/ssl
-
-  # self-sign server certificate
-  openssl req -x509 -newkey rsa:2048 -days 365 -nodes \
-    -keyout $PROJECT_ROOT/nginx/ssl/server.key \
-    -out $PROJECT_ROOT/nginx/ssl/server.crt \
-    -subj "/C=US/ST=Illinois/L=Chicago/O=atateno.io/OU=atateno.io/CN=atateno.io"
-
   # restrict server key permissions to the nginx user
   sudo chown 101:101 $PROJECT_ROOT/nginx/ssl/server.key
   sudo chmod 400 $PROJECT_ROOT/nginx/ssl/server.key
