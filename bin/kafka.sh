@@ -9,4 +9,4 @@ shift
 
 exec docker run -it --rm --network shizuku_default \
   --link shizuku_zookeeper_1:zookeeper wurstmeister/kafka:1.1.0 \
-  bin/kafka-$KAFKA_SCRIPT_NAME.sh --zookeeper zookeeper "$@"
+  kafka-$KAFKA_SCRIPT_NAME.sh --zookeeper zookeeper "$@"
