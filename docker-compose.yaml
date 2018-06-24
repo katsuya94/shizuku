@@ -29,8 +29,8 @@ services:
   zookeeper:
     image: zookeeper:3.4
     restart: always
-    volumes:
-      - "./zookeeper/java.env:/conf/java.env"
+    environment:
+      JVMFLAGS: "-Xms64m -Xmx128m"
   kafka:
     image: wurstmeister/kafka:1.1.0
     restart: always
