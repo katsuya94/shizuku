@@ -39,5 +39,8 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper"
       KAFKA_BROKER_ID: "1"
       KAFKA_HEAP_OPTS: "-Xms128m -Xmx256m"
+  mailstream:
+    build: mailstream
+    restart: always
 volumes:
   jenkins-home: {}
