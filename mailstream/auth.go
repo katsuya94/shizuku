@@ -15,7 +15,7 @@ import (
 )
 
 // Construct a service from an authenticated client.
-func getService() gmail.Service {
+func getService() *gmail.Service {
 	b, err := ioutil.ReadFile("config/client_secret.json")
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
