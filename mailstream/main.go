@@ -13,6 +13,7 @@ const (
 )
 
 func process(message *gmail.Message) error {
+	log.Printf("%+v", message)
 	b, err := base64.URLEncoding.DecodeString(message.Payload.Body.Data)
 	if err != nil {
 		return err
