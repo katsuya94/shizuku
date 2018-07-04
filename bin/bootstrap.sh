@@ -31,6 +31,6 @@ else
   sudo chmod 400 $PROJECT_ROOT/nginx/ssl/server.key
 
   # restrict gmail API credential permissions
-  sudo chown 0:0 $PROJECT_ROOT/mailstream/secret/client_secret.json
-  sudo chmod 400 $PROJECT_ROOT/mailstream/secret/client_secret.json
+  sudo chown 0:0 $PROJECT_ROOT/mailstream/config/client_secret.json
+  sudo chmod 400 $PROJECT_ROOT/mailstream/config/client_secret.json
 fi
