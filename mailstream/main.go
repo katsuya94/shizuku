@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"log"
 
-	"golang.org/x/net/context"
+	// "golang.org/x/net/context"
 	"google.golang.org/api/gmail/v1"
 )
 
@@ -26,13 +26,17 @@ func process(message *gmail.Message) error {
 func main() {
 	user := "me"
 	srv := getService()
-	err := srv.Users.Messages.List(user).Q(chaseQuery).Pages(context.Background(), func(res *gmail.ListMessagesResponse) error {
-		for _, message := range res.Messages {
-			process(message)
-		}
-		return nil
-	})
+	// err := srv.Users.Messages.List(user).Q(chaseQuery).Pages(context.Background(), func(res *gmail.ListMessagesResponse) error {
+	// 	for _, message := range res.Messages {
+	// 		process(message)
+	// 	}
+	// 	return nil
+	// })
+	res, err := srv.Users.Messages.List(user).Q(chaseQuery).Do()
 	if err != nil {
 		log.Fatalf("Encountered error while processing messages: %v", err)
+	}
+	for _, message := range res.Messages {
+		process(message)
 	}
 }
