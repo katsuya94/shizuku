@@ -42,5 +42,7 @@ services:
   mailstream:
     build: mailstream
     restart: always
+    volumes:
+      - "./mailstream/secret:/go/src/github.com/katsuya94/shizuku/mailstream/secret"
 volumes:
   jenkins-home: {}
