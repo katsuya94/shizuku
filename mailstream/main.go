@@ -10,7 +10,7 @@ func main() {
 		log.Print(body)
 		return nil
 	})
-	if err != nil {
+	if err != nil && err != NoMessagesError {
 		log.Fatalf("Encountered error while processing messages: %v", err)
 	}
 }

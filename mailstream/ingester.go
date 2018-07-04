@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/base64"
+	"fmt"
 
 	"golang.org/x/net/context"
 	"google.golang.org/api/gmail/v1"
@@ -10,6 +11,10 @@ import (
 const (
 	User       = "me"
 	ChaseQuery = "from:(no-reply@alertsp.chase.com) subject:(Your Single Transaction Alert from Chase)"
+)
+
+var (
+	NoMessagesError = fmt.Errorf("no more messages")
 )
 
 type MailstreamIngester struct {
@@ -22,6 +27,9 @@ func NewMailstreamIngester(service *gmail.Service) *MailstreamIngester {
 
 func (in *MailstreamIngester) Ingest(f func(message string) error) error {
 	return in.service.Users.Messages.List(User).Q(ChaseQuery).Pages(context.Background(), func(res *gmail.ListMessagesResponse) error {
+		if len(res.Messages) == 0 {
+			return NoMessagesError
+		}
 		for _, message := range res.Messages {
 			body, err := in.fetchMessageBody(message.Id)
 			if err != nil {
