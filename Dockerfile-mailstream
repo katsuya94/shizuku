@@ -1,0 +1,25 @@
+FROM golang
+
+RUN apt-get update && \
+    apt-get install unzip
+
+RUN wget https://github.com/google/protobuf/releases/download/v3.6.0/protoc-3.6.0-linux-x86_64.zip -O /usr/local/protoc-3.6.0-linux-x86_64.zip && \
+    mkdir /usr/local/protoc && \
+    unzip /usr/local/protoc-3.6.0-linux-x86_64.zip -d /usr/local/protoc && \
+    rm /usr/local/protoc-3.6.0-linux-x86_64.zip
+ENV PATH /usr/local/protoc/bin:$PATH
+
+RUN go get -u github.com/golang/protobuf/protoc-gen-go
+RUN go get -u google.golang.org/api/gmail/v1
+RUN go get -u golang.org/x/oauth2/...
+RUN go get -u golang.org/x/oauth2/...
+
+ADD common /go/src/github.com/katsuya94/shizuku/common
+WORKDIR /go/src/github.com/katsuya94/shizuku/common
+RUN protoc --go_out=. *.proto
+
+ADD mailstream /go/src/github.com/katsuya94/shizuku/mailstream
+RUN go install github.com/katsuya94/shizuku/mailstream
+
+WORKDIR /go/src/github.com/katsuya94/shizuku/mailstream
+ENTRYPOINT /go/bin/mailstream

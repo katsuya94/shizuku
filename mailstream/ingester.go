@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 
+	"github.com/katsuya94/shizuku/common"
 	"golang.org/x/net/context"
 	"google.golang.org/api/gmail/v1"
 )
@@ -25,7 +26,7 @@ func NewMailstreamIngester(service *gmail.Service) *MailstreamIngester {
 	return &MailstreamIngester{service: service}
 }
 
-func (in *MailstreamIngester) Ingest(f func(message string) error) error {
+func (in *MailstreamIngester) Ingest(f func(*common.Transaction) error) error {
 	return in.service.Users.Messages.List(User).Q(ChaseQuery).Pages(context.Background(), func(res *gmail.ListMessagesResponse) error {
 		if len(res.Messages) == 0 {
 			return NoMessagesError
@@ -35,7 +36,7 @@ func (in *MailstreamIngester) Ingest(f func(message string) error) error {
 			if err != nil {
 				return err
 			}
-			err = f(body)
+			err = f(&common.Transaction{Description: body})
 			if err != nil {
 				return err
 			}

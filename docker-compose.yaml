@@ -40,7 +40,9 @@ services:
       KAFKA_BROKER_ID: "1"
       KAFKA_HEAP_OPTS: "-Xms128m -Xmx256m"
   mailstream:
-    build: mailstream
+    build:
+      context: .
+      dockerfile: Dockerfile-mailstream
     restart: always
     volumes:
       - "./mailstream/config:/go/src/github.com/katsuya94/shizuku/mailstream/config"
