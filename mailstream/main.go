@@ -1,14 +1,16 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/katsuya94/shizuku/common"
 )
 
 func main() {
+	ctx := context.Background()
 	in := NewMailstreamIngester(GetService())
-	err := in.Ingest(func(transaction *common.Transaction) error {
+	err := in.Ingest(ctx, func(transaction *common.Transaction) error {
 		log.Printf("%+v", transaction)
 		return nil
 	})

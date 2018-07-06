@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/base64"
 	"fmt"
 	"log"
@@ -8,7 +9,6 @@ import (
 	"time"
 
 	"github.com/katsuya94/shizuku/common"
-	"golang.org/x/net/context"
 	gmail "google.golang.org/api/gmail/v1"
 )
 
@@ -37,14 +37,14 @@ func NewMailstreamIngester(service *gmail.Service) *MailstreamIngester {
 	return &MailstreamIngester{service: service}
 }
 
-func (in *MailstreamIngester) Ingest(f func(*common.Transaction) error) error {
-	return in.service.Users.Messages.List(User).Q(ChaseQuery).Pages(context.Background(), func(res *gmail.ListMessagesResponse) error {
+func (in *MailstreamIngester) Ingest(ctx context.Context, f func(*common.Transaction) error) error {
+	return in.service.Users.Messages.List(User).Q(ChaseQuery).Pages(ctx, func(res *gmail.ListMessagesResponse) error {
 		log.Printf("page with %v messages", len(res.Messages))
 		if len(res.Messages) == 0 {
 			return NoMessagesError
 		}
 		for _, message := range res.Messages {
-			if err := in.processPartialMessage(message, f); err != nil {
+			if err := in.processPartialMessage(ctx, message, f); err != nil {
 				return err
 			}
 		}
@@ -52,8 +52,8 @@ func (in *MailstreamIngester) Ingest(f func(*common.Transaction) error) error {
 	})
 }
 
-func (in *MailstreamIngester) processPartialMessage(message *gmail.Message, f func(*common.Transaction) error) error {
-	body, err := in.fetchMessageBody(message.Id)
+func (in *MailstreamIngester) processPartialMessage(ctx context.Context, message *gmail.Message, f func(*common.Transaction) error) error {
+	body, err := in.fetchMessageBody(ctx, message.Id)
 	if err != nil {
 		return err
 	}
@@ -64,8 +64,8 @@ func (in *MailstreamIngester) processPartialMessage(message *gmail.Message, f fu
 	return f(transaction)
 }
 
-func (in *MailstreamIngester) fetchMessageBody(messageId string) (string, error) {
-	message, err := in.service.Users.Messages.Get(User, messageId).Do()
+func (in *MailstreamIngester) fetchMessageBody(ctx context.Context, messageId string) (string, error) {
+	message, err := in.service.Users.Messages.Get(User, messageId).Context(ctx).Do()
 	if err != nil {
 		return "", err
 	}
