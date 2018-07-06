@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/base64"
 	"fmt"
+	"log"
 	"regexp"
 	"time"
 
@@ -38,6 +39,7 @@ func NewMailstreamIngester(service *gmail.Service) *MailstreamIngester {
 
 func (in *MailstreamIngester) Ingest(f func(*common.Transaction) error) error {
 	return in.service.Users.Messages.List(User).Q(ChaseQuery).Pages(context.Background(), func(res *gmail.ListMessagesResponse) error {
+		log.Printf("page with %v messages", len(res.Messages))
 		if len(res.Messages) == 0 {
 			return NoMessagesError
 		}
