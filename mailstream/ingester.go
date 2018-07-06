@@ -18,7 +18,7 @@ const (
 
 var (
 	NoMessagesError = fmt.Errorf("no more messages")
-	ChaseRegexp     = regexp.MustCompile(`A charge of \(\$USD\) (?P<amount>\d+\.\d\d) at (?P<descriptor>.+) has been authorized on (?P<time>\d{2}/\d{2}/\d{4}) \d{1,2}:\d{2}:\d{2} (AM|PM) [A-Z]+).`)
+	ChaseRegexp     = regexp.MustCompile(`A charge of \(\$USD\) (?P<amount>\d+\.\d\d) at (?P<descriptor>.+) has been authorized on (?P<time>\d{2}/\d{2}/\d{4} \d{1,2}:\d{2}:\d{2} (AM|PM) [A-Z]+).`)
 	ChaseTimeLayout = "01/02/2006 3:04:05 PM MST"
 )
 
