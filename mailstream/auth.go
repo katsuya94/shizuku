@@ -11,11 +11,11 @@ import (
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
-	"google.golang.org/api/gmail/v1"
+	gmail "google.golang.org/api/gmail/v1"
 )
 
 // Construct a service from an authenticated client.
-func getService() *gmail.Service {
+func GetService() *gmail.Service {
 	b, err := ioutil.ReadFile("config/client_secret.json")
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)

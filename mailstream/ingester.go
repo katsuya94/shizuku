@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/base64"
 	"fmt"
+	"regexp"
+	"time"
 
 	"github.com/katsuya94/shizuku/common"
 	"golang.org/x/net/context"
-	"google.golang.org/api/gmail/v1"
+	gmail "google.golang.org/api/gmail/v1"
 )
 
 const (
@@ -16,7 +18,15 @@ const (
 
 var (
 	NoMessagesError = fmt.Errorf("no more messages")
+	ChaseRegexp     = regexp.MustCompile(`A charge of \(\$USD\) (?P<amount>\d+\.\d\d) at (?P<descriptor>.+) has been authorized on (?P<time>\d{2}/\d{2}/\d{4}) \d{1,2}:\d{2}:\d{2} (AM|PM) [A-Z]+).`)
+	ChaseTimeLayout = "01/02/2006 3:04:05 PM MST"
 )
+
+type MessageBodyParseError string
+
+func (body MessageBodyParseError) Error() string {
+	return fmt.Sprintf("failed to parse message body: %v", body)
+}
 
 type MailstreamIngester struct {
 	service *gmail.Service
@@ -32,17 +42,24 @@ func (in *MailstreamIngester) Ingest(f func(*common.Transaction) error) error {
 			return NoMessagesError
 		}
 		for _, message := range res.Messages {
-			body, err := in.fetchMessageBody(message.Id)
-			if err != nil {
-				return err
-			}
-			err = f(&common.Transaction{Description: body})
-			if err != nil {
+			if err := in.processPartialMessage(message, f); err != nil {
 				return err
 			}
 		}
 		return nil
 	})
+}
+
+func (in *MailstreamIngester) processPartialMessage(message *gmail.Message, f func(*common.Transaction) error) error {
+	body, err := in.fetchMessageBody(message.Id)
+	if err != nil {
+		return err
+	}
+	transaction := &common.Transaction{Id: message.Id}
+	if err := parseMessageBody(transaction, body); err != nil {
+		return err
+	}
+	return f(transaction)
 }
 
 func (in *MailstreamIngester) fetchMessageBody(messageId string) (string, error) {
@@ -55,4 +72,19 @@ func (in *MailstreamIngester) fetchMessageBody(messageId string) (string, error)
 		return "", err
 	}
 	return string(b), nil
+}
+
+func parseMessageBody(transaction *common.Transaction, body string) error {
+	submatch := ChaseRegexp.FindStringSubmatch(body)
+	if submatch == nil {
+		return MessageBodyParseError(body)
+	}
+	transaction.Amount = submatch[1]
+	transaction.Description = submatch[2]
+	t, err := time.ParseInLocation(ChaseTimeLayout, submatch[3], time.UTC)
+	if err != nil {
+		return err
+	}
+	transaction.Time = t.Format(time.RFC3339)
+	return nil
 }

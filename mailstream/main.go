@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	in := NewMailstreamIngester(getService())
-	err := in.Ingest(func(t *common.Transaction) error {
-		log.Printf("%+v", t)
+	in := NewMailstreamIngester(GetService())
+	err := in.Ingest(func(transaction *common.Transaction) error {
+		log.Printf("%+v", transaction)
 		return nil
 	})
 	if err != nil && err != NoMessagesError {
