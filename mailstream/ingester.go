@@ -37,14 +37,13 @@ func NewMailstreamIngester(service *gmail.Service) *MailstreamIngester {
 	return &MailstreamIngester{service: service}
 }
 
-func (in *MailstreamIngester) Ingest(ctx context.Context, f func(*common.Transaction) error) error {
-	return in.service.Users.Messages.List(User).Q(ChaseQuery).Pages(ctx, func(res *gmail.ListMessagesResponse) error {
-		log.Printf("page with %v messages", len(res.Messages))
+func (ingester *MailstreamIngester) Ingest(ctx context.Context, f func(*common.Transaction) error) error {
+	return ingester.service.Users.Messages.List(User).Q(ChaseQuery).Pages(ctx, func(res *gmail.ListMessagesResponse) error {
 		if len(res.Messages) == 0 {
 			return NoMessagesError
 		}
 		for _, message := range res.Messages {
-			if err := in.processPartialMessage(ctx, message, f); err != nil {
+			if err := ingester.processPartialMessage(ctx, message, f); err != nil {
 				return err
 			}
 		}
@@ -52,8 +51,8 @@ func (in *MailstreamIngester) Ingest(ctx context.Context, f func(*common.Transac
 	})
 }
 
-func (in *MailstreamIngester) processPartialMessage(ctx context.Context, message *gmail.Message, f func(*common.Transaction) error) error {
-	body, err := in.fetchMessageBody(ctx, message.Id)
+func (ingester *MailstreamIngester) processPartialMessage(ctx context.Context, message *gmail.Message, f func(*common.Transaction) error) error {
+	body, err := ingester.fetchMessageBody(ctx, message.Id)
 	if err != nil {
 		return err
 	}
@@ -64,8 +63,8 @@ func (in *MailstreamIngester) processPartialMessage(ctx context.Context, message
 	return f(transaction)
 }
 
-func (in *MailstreamIngester) fetchMessageBody(ctx context.Context, messageId string) (string, error) {
-	message, err := in.service.Users.Messages.Get(User, messageId).Context(ctx).Do()
+func (ingester *MailstreamIngester) fetchMessageBody(ctx context.Context, messageId string) (string, error) {
+	message, err := ingester.service.Users.Messages.Get(User, messageId).Context(ctx).Do()
 	if err != nil {
 		return "", err
 	}
