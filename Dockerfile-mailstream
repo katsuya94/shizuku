@@ -26,5 +26,5 @@ RUN go install github.com/katsuya94/shizuku/mailstream
 FROM debian:stretch
 
 COPY --from=0 /go/bin/mailstream /root/mailstream
-
+WORKDIR /root
 ENTRYPOINT ["./mailstream"]
