@@ -30,7 +30,7 @@ func (e messageEncoder) Length() int {
 
 func main() {
 	c := cron.NewWithLocation(time.UTC)
-	c.AddFunc("0 */5 * * * *", deliverNewTransactions)
+	c.AddFunc("0 */30 * * * *", deliverNewTransactions)
 	c.Run()
 }
 
