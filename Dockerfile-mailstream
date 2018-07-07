@@ -25,6 +25,8 @@ RUN go install github.com/katsuya94/shizuku/mailstream
 
 FROM debian:stretch
 
+RUN apt-get update
+RUN apt-get install ca-certificates
 COPY --from=0 /go/bin/mailstream /root/mailstream
 WORKDIR /root
 ENTRYPOINT ["./mailstream"]
