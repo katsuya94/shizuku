@@ -60,7 +60,7 @@ func (ingester *MailstreamIngester) processPartialMessage(ctx context.Context, m
 	if err := parseMessageBody(transaction, body); err != nil {
 		return err
 	}
-	Log.printf("processed message %v with transaction authorized at %v", message.Id, message.Time)
+	log.Printf("processed message %v with transaction authorized at %v", transaction.Id, transaction.Time)
 	return f(transaction)
 }
 
