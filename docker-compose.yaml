@@ -15,17 +15,15 @@ services:
   #     - "jenkins-home:/var/jenkins_home"
   #     - "./jenkins/entrypoint.sh:/usr/local/bin/entrypoint.sh"
   nginx:
-    image: nginx:1.15
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
     restart: always
-    entrypoint: ["/root/entrypoint.sh"]
-    command: ["nginx", "-g", "daemon off;"]
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - "./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf"
       - "./nginx/ssl:/etc/nginx/ssl"
-      - "./nginx/entrypoint.sh:/root/entrypoint.sh"
   zookeeper:
     image: zookeeper:3.4
     restart: always
@@ -45,6 +43,6 @@ services:
       dockerfile: Dockerfile-mailstream
     restart: always
     volumes:
-      - "./mailstream/config:/go/src/github.com/katsuya94/shizuku/mailstream/config"
+      - "./mailstream/config:/root/config"
 volumes:
   jenkins-home: {}

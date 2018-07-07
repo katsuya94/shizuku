@@ -1,12 +1,12 @@
 FROM golang
 
-RUN apt-get update && \
-    apt-get install unzip
+RUN apt-get update
+RUN apt-get install unzip
 
-RUN wget https://github.com/google/protobuf/releases/download/v3.6.0/protoc-3.6.0-linux-x86_64.zip -O /usr/local/protoc-3.6.0-linux-x86_64.zip && \
-    mkdir /usr/local/protoc && \
-    unzip /usr/local/protoc-3.6.0-linux-x86_64.zip -d /usr/local/protoc && \
-    rm /usr/local/protoc-3.6.0-linux-x86_64.zip
+RUN wget https://github.com/google/protobuf/releases/download/v3.6.0/protoc-3.6.0-linux-x86_64.zip -O /usr/local/protoc-3.6.0-linux-x86_64.zip
+RUN mkdir /usr/local/protoc
+RUN unzip /usr/local/protoc-3.6.0-linux-x86_64.zip -d /usr/local/protoc
+RUN rm /usr/local/protoc-3.6.0-linux-x86_64.zip
 ENV PATH /usr/local/protoc/bin:$PATH
 
 RUN go get -u github.com/golang/protobuf/protoc-gen-go
@@ -23,5 +23,8 @@ RUN protoc --go_out=. *.proto
 ADD mailstream /go/src/github.com/katsuya94/shizuku/mailstream
 RUN go install github.com/katsuya94/shizuku/mailstream
 
-WORKDIR /go/src/github.com/katsuya94/shizuku/mailstream
-ENTRYPOINT /go/bin/mailstream
+FROM debian:stretch
+
+COPY --from=0 /go/bin/mailstream /root/mailstream
+
+ENTRYPOINT ["./mailstream"]
