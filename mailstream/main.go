@@ -37,7 +37,7 @@ func main() {
 func deliverNewTransactions() {
 	ctx := context.Background()
 	ingester := NewMailstreamIngester(GetService())
-	producer, err := sarama.NewSyncProducer([]string{"kafka"}, nil)
+	producer, err := sarama.NewSyncProducer([]string{"kafka:9092"}, nil)
 	if err != nil {
 		log.Fatalf("error starting producer: %v", err)
 	}
