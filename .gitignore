@@ -1,2 +1,4 @@
 nginx/ssl
 mailstream/config
+web/node_modules
+web/assets

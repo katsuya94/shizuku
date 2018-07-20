@@ -1,0 +1,9 @@
+---
+version: "3"
+services:
+  webpack-dev-server:
+    build: .
+    ports:
+      - "9000:9000"
+    volumes:
+      - ".:/usr/local/web"
