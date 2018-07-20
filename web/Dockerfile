@@ -6,4 +6,4 @@ WORKDIR /usr/local/web
 ADD . .
 
 ENTRYPOINT ["/usr/local/web/entrypoint.sh"]
-CMD ["npx", "webpack-dev-server", "--mode", "development"]
+CMD ["npx", "webpack-dev-server"]

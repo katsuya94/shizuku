@@ -3,10 +3,13 @@ FROM node
 RUN mkdir /usr/local/web
 WORKDIR /usr/local/web
 
+ENV NODE_ENV production
+
+ADD web/package*.json ./
+RUN npm install
 ADD web .
 
-RUN npm install
-RUN npx webpack --production
+RUN npx webpack
 
 FROM nginx:1.15
 
