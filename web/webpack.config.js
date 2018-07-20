@@ -50,7 +50,12 @@ module.exports = {
       },
       {
         test: /\.jpg$/,
-        use: "file-loader"
+        use: {
+          loader: "file-loader",
+          options: {
+            outputPath: "assets/",
+          }
+        }
       }
     ]
   },
