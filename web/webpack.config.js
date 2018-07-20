@@ -37,6 +37,7 @@ module.exports = {
           process.env.NODE_ENV === "production"
             ? MiniCssExtractPlugin.loader
             : "style-loader",
+          "css-modules-flow-types-loader",
           {
             loader: "css-loader",
             options: {
@@ -49,7 +50,7 @@ module.exports = {
       },
       {
         test: /\.jpg$/,
-        use: "file-loader",
+        use: "file-loader"
       }
     ]
   },

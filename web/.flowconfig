@@ -7,7 +7,8 @@
 [lints]
 
 [options]
-module.name_mapper='^\(.*\)\.\(scss|sass\)$' -> '<PROJECT_ROOT>/CSSModule'
-module.name_mapper='^\(.*\)\.jpg$' -> '<PROJECT_ROOT>/ImageModule'
+module.file_ext=.js
+module.file_ext=.scss
+module.file_ext=.sass
 
 [strict]

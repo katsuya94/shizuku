@@ -2,16 +2,16 @@
 
 import React from "react";
 import classnames from "classnames";
-import { hero, heroBody, container, title, subtitle } from "bulma/bulma.sass";
+import bulma from "bulma";
 
-import { atBanner } from "./App.scss"
+import styles from "./App.scss";
 
 const Home = () => (
-  <section className={hero}>
-    <div className={classnames(heroBody, atBanner)}>
-      <div className={container}>
-        <h1 className={title}>Adrien Tateno</h1>
-        <h2 className={subtitle}>Developer</h2>
+  <section className={bulma.hero}>
+    <div className={classnames(bulma.heroBody, styles.atBanner)}>
+      <div className={bulma.container}>
+        <h1 className={bulma.title}>Adrien Tateno</h1>
+        <h2 className={bulma.subtitle}>Developer</h2>
       </div>
     </div>
   </section>
