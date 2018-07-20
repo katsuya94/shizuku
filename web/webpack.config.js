@@ -13,7 +13,7 @@ module.exports = {
   plugins: [
     new webpack.EnvironmentPlugin(["NODE_ENV"]),
     new HtmlWebpackPlugin({
-      title: "atateno.io",
+      title: "Adrien Tateno - Developer",
       template: require("html-webpack-template"),
       appMountId: "root",
       minify: process.env.NODE_ENV === "production" ? {} : false
@@ -37,9 +37,19 @@ module.exports = {
           process.env.NODE_ENV === "production"
             ? MiniCssExtractPlugin.loader
             : "style-loader",
-          "css-loader",
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              camelCase: true
+            }
+          },
           "sass-loader"
         ]
+      },
+      {
+        test: /\.jpg$/,
+        use: "file-loader",
       }
     ]
   },
