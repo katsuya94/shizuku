@@ -16,7 +16,7 @@ module.exports = {
       title: "atateno.io",
       template: require("html-webpack-template"),
       appMountId: "root",
-      minify: process.env.NODE_ENV === "production"
+      minify: process.env.NODE_ENV === "production" ? {} : false
     })
   ],
   module: {
