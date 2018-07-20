@@ -57,8 +57,8 @@ module.exports = {
 if (process.env.NODE_ENV === "production") {
   module.exports.plugins.push(
     new MiniCssExtractPlugin({
-      filename: "[name].[hash].css",
-      chunkFilename: "[id].[hash].css"
+      filename: "assets/[name].[hash].css",
+      chunkFilename: "assets/[id].[hash].css"
     }),
     new OptimizeCssAssetsPlugin({}),
     new UglifyJSPlugin({
