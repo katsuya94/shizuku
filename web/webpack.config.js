@@ -53,7 +53,7 @@ module.exports = {
         use: {
           loader: "file-loader",
           options: {
-            outputPath: "assets/",
+            outputPath: "assets/"
           }
         }
       }
@@ -61,7 +61,8 @@ module.exports = {
   },
   output: {
     filename: "assets/index.js",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/"
   },
   devtool: "source-map",
   devServer: {
